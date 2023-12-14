@@ -6,29 +6,55 @@ export default TicTacToe;
 
 
 function TicTacToe() {
-    const [isXTurn, setIsXTurn] = useState(true)
+    const [currentMove, setCurrentMove] = useState(0);
+    const isXTurn = currentMove % 2 === 0;
     const [history, setHistory] = useState([Array(9).fill(null)]);
+    const currentValues = history[currentMove];
 
-    const currentValues = history[history.length -1];
+    function handleMove(squares) {
+        const nextHistory = [...history.slice(0, currentMove + 1), squares];
+        setHistory(nextHistory);
+        setCurrentMove(nextHistory.length - 1);
+    }
+
+    const moves = history.map((squares, move)=> {
+        let step;
+        if(move > 0) {
+            step = "Go to move: " + move;
+        }
+        else {
+            step = "Start the Game"
+        }
+
+       return  (
+           <li key={move}>
+               <button onClick={() => handleBackTrack(move)}>{step}</button>
+           </li>
+       );
+    })
+
+    function handleBackTrack(squares) {
+        setCurrentMove(squares);
+    }
 
     return (
         <div>
             <div className="game-board">
-                <Board />
+                <Board isXTurn={isXTurn} currentValues={currentValues} handleMove={handleMove}/>
+            </div>
+            <div>
+                <ul>{moves}</ul>
             </div>
         </div>
     );
 }
 
-function Board() {
-
-    const [isXTurn, setIsXTurn] = useState(true)
-    const [boxes, setValue] = useState(Array(9).fill(null))
+function Board({isXTurn, currentValues, handleMove}) {
 
     function handleBoxClick(i) {
-        if(boxes[i] || getWinner(boxes)) return;
+        if(currentValues[i] || getWinner(currentValues)) return;
 
-        const squares = boxes.slice();
+        const squares = currentValues.slice();
 
         if(isXTurn) {
             squares[i] = "X";
@@ -36,8 +62,7 @@ function Board() {
         else {
             squares[i] = "O";
         }
-        setValue(squares);
-        setIsXTurn(!isXTurn)
+        handleMove(squares);
     }
 
     function getWinner(boxes) {
@@ -61,7 +86,7 @@ function Board() {
         return null;
     }
 
-    const winner = getWinner(boxes);
+    const winner = getWinner(currentValues);
     let result;
 
     if(winner) {
@@ -73,22 +98,22 @@ function Board() {
 
     return (
       <>
-          <div className="board-row">
-              <Square value={boxes[0]} onBoxClick={()=>handleBoxClick(0)}/>
-              <Square value={boxes[1]} onBoxClick={()=>handleBoxClick(1)}/>
-              <Square value={boxes[2]} onBoxClick={()=>handleBoxClick(2)}/>
-          </div>
-          <div className="board-row">
-              <Square value={boxes[3]} onBoxClick={()=>handleBoxClick(3)}/>
-              <Square value={boxes[4]} onBoxClick={()=>handleBoxClick(4)}/>
-              <Square value={boxes[5]} onBoxClick={()=>handleBoxClick(5)}/>
-          </div>
-          <div className="board-row">
-              <Square value={boxes[6]} onBoxClick={()=>handleBoxClick(6)}/>
-              <Square value={boxes[7]} onBoxClick={()=>handleBoxClick(7)}/>
-              <Square value={boxes[8]} onBoxClick={()=>handleBoxClick(8)}/>
-          </div>
           <div><h3>{result}</h3></div>
+          <div className="board-row">
+              <Square value={currentValues[0]} onBoxClick={()=>handleBoxClick(0)}/>
+              <Square value={currentValues[1]} onBoxClick={()=>handleBoxClick(1)}/>
+              <Square value={currentValues[2]} onBoxClick={()=>handleBoxClick(2)}/>
+          </div>
+          <div className="board-row">
+              <Square value={currentValues[3]} onBoxClick={()=>handleBoxClick(3)}/>
+              <Square value={currentValues[4]} onBoxClick={()=>handleBoxClick(4)}/>
+              <Square value={currentValues[5]} onBoxClick={()=>handleBoxClick(5)}/>
+          </div>
+          <div className="board-row">
+              <Square value={currentValues[6]} onBoxClick={()=>handleBoxClick(6)}/>
+              <Square value={currentValues[7]} onBoxClick={()=>handleBoxClick(7)}/>
+              <Square value={currentValues[8]} onBoxClick={()=>handleBoxClick(8)}/>
+          </div>
       </>
   );
 }
