@@ -5,6 +5,10 @@ import BrowserEventApp from "./components/use-effect/BrowserEventApp";
 import AnimationApp from "./components/use-effect/AnimationApp";
 import DialogApp from "./components/use-effect/DialogApp";
 import CounterApp from "./components/use-effect/CounterApp";
+import UseReducer from "./components/user-reducer/UseReducer";
+import CallBackApp from "./components/user-callback/CallBackApp";
+import UseMemoBasicApp from "./components/use-memo/UseMemoBasicApp";
+import PreservingAndResetting from "./components/preserving-and-resetting-state/PreservingAndResetting";
 
 
 
@@ -22,13 +26,20 @@ function App() {
     };
 
     return (
-        <div style={containerStyle}>
-            <ChatApp style={componentStyle} />
-            {/*<BrowserEventApp style={componentStyle} />*/}
-            <AnimationApp style={componentStyle} />
-            <DialogApp/>
-            <CounterApp/>
+        <div>
+            <div style={containerStyle}>
+                <ChatApp style={componentStyle} />
+                {/*<BrowserEventApp style={componentStyle} />*/}
+                <AnimationApp style={componentStyle} />
+                <DialogApp/>
+                <CounterApp/>
+                <UseReducer/>
+                <CallBackApp/>
+                <UseMemoBasicApp/>
+                <PreservingAndResetting/>
+            </div>
         </div>
+
     );
 }
 
